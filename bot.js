@@ -30,67 +30,59 @@ bot.onText(/Заполнить анкету/, (msg) => {
     const chatId = msg.chat.id;
     let user = {step: 1};
     const userId = msg.from.id;
-    // Здесь вы можете создать функциональность для отправки сообщения о нарушении и т.д.
-    // В данном случае, я отправлю простое сообщение о нарушении.
-    bot.sendMessage(chatId, 'Шаг 1 из 3: Ваше Имя?');
 
-    bot.on('text', (msg) => {
+    bot.sendMessage(chatId, 'Шаг 1 из 3: Ваше Имя');
+
+    // Обработчик события 'text' для всего процесса анкеты
+    function handleUserInput(msg) {
         switch (user.step) {
             case 1:
                 user.name = msg.text;
                 user.step++;
-                bot.sendMessage(chatId, 'Шаг 2 из 3: Ваше Фамилия?');
+                bot.sendMessage(chatId, 'Шаг 2 из 3: Ваша Фамилия');
                 break;
 
             case 2:
                 user.surname = msg.text;
                 user.step++;
-                bot.sendMessage(chatId, 'Шаг 3 из 3: Чем вы занимаетесь (программист, маркетолог, дизайнер)?');
+                bot.sendMessage(chatId, 'Шаг 3 из 3: Кем вы работаете?');
                 break;
-
 
             case 3:
                 user.speciality = msg.text;
-
-                // Отправляем данные анкеты в вашу личку
-                const yourChatId = process.env.MY_CHAT_ID; // Замените на ваш chat_id
-                const username = msg.from.username; // Получаем username пользователя
-                bot.sendMessage(chatId, `Новая анкета:\n\nИмя : ${user.name}\nФамилия: ${user.surname}\nВаша специальность: ${user.speciality}\nUsername: @${username}`);
+                const username = msg.from.username;
+                bot.sendMessage(chatId, `Новая анкета:\n\nИмя: ${user.name}\nФамилия: ${user.surname}\nСпециальность: ${user.speciality}\nUsername: @${username}`);
                 bot.sendMessage(chatId, 'Спасибо за заполнение анкеты!');
                 const config = {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 };
-
-                const dataToSend = {
-                    name: "Имя",
-                    surname: "Фамилия",
-                    speciality: "Специальность"
-                };
-
-                axios.post('http://localhost:3000/api/save-data/', dataToSend, config)
+                axios.post('http://qosyl.me:3000/api/save-data/', user, config)
                     .then(response => {
-                        // Обработка ответа от сервера (например, сообщения об успешном сохранении)
-                        console.log(dataToSend);
+                        console.log(response.data);
                     })
                     .catch(error => {
                         console.log(error);
                     });
-                // Тут вы можете сохранить данные пользователя или выполнить другие действия
-                // После завершения обработки, можно удалить данные о пользователе
+
+                // Удаление обработчика события 'text' после завершения анкеты
+                bot.removeListener('text', handleUserInput);
+
                 delete users[userId];
+                user.step = null;
                 break;
-
-
-
 
             default:
                 bot.sendMessage(chatId, 'Неверный шаг. Пожалуйста, используйте команду /start, чтобы начать заново.');
                 break;
         }
-    })
+    }
+
+    // Добавление обработчика события 'text'
+    bot.on('text', handleUserInput);
 });
+
 // Запускаем бота
 bot.on('polling_error', (error) => {
     console.error(error);
