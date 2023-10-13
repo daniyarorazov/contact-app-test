@@ -6,7 +6,7 @@ const port = 3000; // Порт, на котором будет работать 
 // Подключение к базе данных PostgreSQL
 const pgp = require('pg-promise')();
 const db = pgp({
-    connectionString: 'postgresql://postgres:123123@localhost:5432/contact_book'
+    connectionString: 'postgresql://postgres:123123@127.0.0.1/contact_book'
 });
 
 // Разрешить парсинг данных JSON
