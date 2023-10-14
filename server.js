@@ -45,7 +45,7 @@ app.get('/api/get-data', (req, res) => {
 
 app.post('/send-message', (req, res) => {
     const chatId = req.query.chat_id; // Получите chat_id из параметра запроса
-    const messageText = 'Привет, это ваш бот!';
+    const messageText = 'Привет, вашей анкетой были заинтересованы';
 
     // Отправьте сообщение в чат
     bot.sendMessage(chatId, messageText);
