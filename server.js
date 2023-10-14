@@ -22,7 +22,7 @@ app.post('/api/save-data', (req, res) => {
     console.log(req.body)
 
     // Вставка данных в базу данных
-    db.none('INSERT INTO contacts (name, surname, speciality) VALUES ($1, $2, $3)', [dataToSave.name, dataToSave.surname, dataToSave.speciality])
+    db.none('INSERT INTO contacts (name, surname, speciality, chat_id) VALUES ($1, $2, $3, $4)', [dataToSave.name, dataToSave.surname, dataToSave.speciality, dataToSave.chat_id])
         .then(() => {
             res.json({ message: 'Данные успешно сохранены' });
         })

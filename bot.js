@@ -31,11 +31,12 @@ bot.onText(/Заполнить анкету/, (msg) => {
     const chatId = msg.chat.id;
     let user = {step: 1};
     const userId = msg.from.id;
-
+    user.chat_id = chatId;
     bot.sendMessage(chatId, 'Шаг 1 из 3: Ваше Имя');
 
     // Обработчик события 'text' для всего процесса анкеты
     function handleUserInput(msg) {
+
         switch (user.step) {
             case 1:
                 user.name = msg.text;
@@ -52,7 +53,7 @@ bot.onText(/Заполнить анкету/, (msg) => {
             case 3:
                 user.speciality = msg.text;
                 const username = msg.from.username;
-                bot.sendMessage(chatId, `Новая анкета:\n\nИмя: ${user.name}\nФамилия: ${user.surname}\nСпециальность: ${user.speciality}\nUsername: @${username}\nu${userId}`);
+                bot.sendMessage(chatId, `Новая анкета:\n\nИмя: ${user.name}\nФамилия: ${user.surname}\nСпециальность: ${user.speciality}\nUsername: @${username}\n${userId}`);
                 bot.sendMessage(chatId, 'Спасибо за заполнение анкеты!');
                 const config = {
                     headers: {
