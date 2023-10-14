@@ -1,5 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
+const bodyParser = require('body-parser');
 
 require('dotenv').config();
 
@@ -51,7 +52,7 @@ bot.onText(/Заполнить анкету/, (msg) => {
             case 3:
                 user.speciality = msg.text;
                 const username = msg.from.username;
-                bot.sendMessage(chatId, `Новая анкета:\n\nИмя: ${user.name}\nФамилия: ${user.surname}\nСпециальность: ${user.speciality}\nUsername: @${username}`);
+                bot.sendMessage(chatId, `Новая анкета:\n\nИмя: ${user.name}\nФамилия: ${user.surname}\nСпециальность: ${user.speciality}\nUsername: @${username}\nu${userId}`);
                 bot.sendMessage(chatId, 'Спасибо за заполнение анкеты!');
                 const config = {
                     headers: {
