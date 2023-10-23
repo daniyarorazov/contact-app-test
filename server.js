@@ -6,6 +6,7 @@ const cors = require('cors');
 const TelegramBot = require('node-telegram-bot-api');
 // Подключение к базе данных PostgreSQL
 const pgp = require('pg-promise')();
+const { exec } = require('child_process');
 app.use(cors());
 const db = pgp({
     connectionString: 'postgresql://postgres:123123@127.0.0.1/contact_book'
@@ -31,6 +32,22 @@ app.post('/api/save-data', (req, res) => {
             res.status(500).json({ error: 'Произошла ошибка при сохранении данных' });
         });
 });
+
+app.get('/api/deploy', (req, res) => {
+    // Выполнить команду `git pull` в консоли VPS сервера
+    exec('git pull origin main', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Ошибка выполнения команды: ${error}`);
+            return res.status(500).send('Ошибка при выполнении команды git pull');
+        }
+
+        console.log(`stdout: ${stdout}`);
+        console.error(`stderr: ${stderr}`);
+        
+        return res.status(200).send('Команда git pull выполнена успешно');
+    });
+});
+
 
 app.get('/api/get-data', (req, res) => {
     db.any('SELECT * FROM contacts')
