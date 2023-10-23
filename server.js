@@ -35,7 +35,6 @@ app.post('/api/save-data', (req, res) => {
 
 app.post('/api/deploy', (req, res) => {
     executeCommand('git pull origin main', 'Команда git pull выполнена успешно', res);
-    executeCommand('pm2 restart server', 'Команда pm2 restart server выполнена успешно', res);
 });
 
 function executeCommand(command, successMessage, response) {
