@@ -46,6 +46,22 @@ app.post('/api/deploy', (req, res) => {
         
         return res.status(200).send('Команда git pull выполнена успешно');
     });
+
+    exec('pm2 restart server', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Ошибка выполнения команды: ${error}`);
+            return res.status(500).send('Ошибка при выполнении команды git pull');
+        }
+
+        console.log(`stdout: ${stdout}`);
+        console.error(`stderr: ${stderr}`);
+        
+        return res.status(200).send('Команда git pull выполнена успешно');
+    });
+});
+
+app.get('/test', (req, res) => {
+    res.send('Hello World!');
 });
 
 
