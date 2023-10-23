@@ -33,7 +33,7 @@ app.post('/api/save-data', (req, res) => {
         });
 });
 
-app.get('/api/deploy', (req, res) => {
+app.post('/api/deploy', (req, res) => {
     // Выполнить команду `git pull` в консоли VPS сервера
     exec('git pull origin main', (error, stdout, stderr) => {
         if (error) {
