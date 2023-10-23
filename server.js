@@ -51,7 +51,7 @@ function executeCommand(command, successMessage, response) {
     });
 }
 
-app.get('/test', (req, res) => {
+app.get('/test2', (req, res) => {
     res.send('Hello World!');
 });
 
