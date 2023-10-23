@@ -34,31 +34,22 @@ app.post('/api/save-data', (req, res) => {
 });
 
 app.post('/api/deploy', (req, res) => {
-    // Выполнить команду `git pull` в консоли VPS сервера
-    exec('git pull origin main', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Ошибка выполнения команды: ${error}`);
-            return res.status(500).send('Ошибка при выполнении команды git pull');
-        }
-
-        console.log(`stdout: ${stdout}`);
-        console.error(`stderr: ${stderr}`);
-        
-        return res.status(200).send('Команда git pull выполнена успешно');
-    });
-
-    exec('pm2 restart server', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Ошибка выполнения команды: ${error}`);
-            return res.status(500).send('Ошибка при выполнении команды git pull');
-        }
-
-        console.log(`stdout: ${stdout}`);
-        console.error(`stderr: ${stderr}`);
-        
-        return res.status(200).send('Команда git pull выполнена успешно');
-    });
+    executeCommand('git pull origin main', 'Команда git pull выполнена успешно', res);
+    executeCommand('pm2 restart server', 'Команда pm2 restart server выполнена успешно', res);
 });
+
+function executeCommand(command, successMessage, response) {
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Ошибка выполнения команды: ${error}`);
+            response.status(500).send(`Ошибка при выполнении команды: ${error}`);
+        } else {
+            console.log(`stdout: ${stdout}`);
+            console.error(`stderr: ${stderr}`);
+            response.status(200).send(successMessage);
+        }
+    });
+}
 
 app.get('/test', (req, res) => {
     res.send('Hello World!');
