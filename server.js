@@ -9,7 +9,7 @@ const pgp = require('pg-promise')();
 const { exec } = require('child_process');
 app.use(cors());
 const db = pgp({
-    connectionString: 'postgresql://postgres:123123@127.0.0.1/contact_book'
+    connectionString: 'postgresql://postgres:123123@127.0.0.1/mansap_telegram_database'
 });
 // Разрешить парсинг данных JSON
 app.use(bodyParser.json());
@@ -23,7 +23,7 @@ app.post('/api/save-data', (req, res) => {
     console.log(req.body)
 
     // Вставка данных в базу данных
-    db.none('INSERT INTO contacts (name, surname, speciality, university, chat_id) VALUES ($1, $2, $3, $4, $5)', [dataToSave.name, dataToSave.surname, dataToSave.speciality, dataToSave.university, dataToSave.chat_id])
+    db.none('INSERT INTO students (name, surname, speciality, phone_number, course_number, faculty, university, description_about_speciality, skills, required_getting_skills, ready_practice_free, chat_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)', [dataToSave.name, dataToSave.surname, dataToSave.speciality, dataToSave.phone_number, dataToSave.course_number, dataToSave.faculty, dataToSave.university, dataToSave.description_about_speciality, dataToSave.skills, dataToSave.required_getting_skills, dataToSave.ready_practice_free, dataToSave.chat_id])
         .then(() => {
             res.json({ message: 'Данные успешно сохранены' });
         })
@@ -68,7 +68,7 @@ app.get('/test2', (req, res) => {
 
 
 app.get('/api/get-data', (req, res) => {
-    db.any('SELECT * FROM contacts')
+    db.any('SELECT * FROM students')
         .then(data => {
             res.json(data);
         })
