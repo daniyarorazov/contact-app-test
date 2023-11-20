@@ -23,7 +23,7 @@ app.post('/api/save-data', (req, res) => {
     console.log(req.body)
 
     // Вставка данных в базу данных
-    db.none('INSERT INTO contacts (name, surname, speciality, chat_id) VALUES ($1, $2, $3, $4)', [dataToSave.name, dataToSave.surname, dataToSave.speciality, dataToSave.chat_id])
+    db.none('INSERT INTO contacts (name, surname, speciality, university, chat_id) VALUES ($1, $2, $3, $4, $5)', [dataToSave.name, dataToSave.surname, dataToSave.speciality, dataToSave.university, dataToSave.chat_id])
         .then(() => {
             res.json({ message: 'Данные успешно сохранены' });
         })
@@ -32,23 +32,35 @@ app.post('/api/save-data', (req, res) => {
             res.status(500).json({ error: 'Произошла ошибка при сохранении данных' });
         });
 });
-
-app.post('/api/deploy', (req, res) => {
-    executeCommand('git pull origin main', 'Команда git pull выполнена успешно', res);
-});
-
-function executeCommand(command, successMessage, response) {
-    exec(command, (error, stdout, stderr) => {
+const commands = [
+    'git pull origin main',
+    'pm2 restart server',
+    'npm run build',
+  ];
+  
+  function executeCommandsSequentially(commands, currentIndex) {
+    if (currentIndex < commands.length) {
+      const command = commands[currentIndex];
+      
+      exec(command, (error, stdout, stderr) => {
         if (error) {
-            console.error(`Ошибка выполнения команды: ${error}`);
-            response.status(500).send(`Ошибка при выполнении команды: ${error}`);
+          console.error(`Ошибка выполнения команды: ${error}`);
+          console.error(`stderr: ${stderr}`);
         } else {
-            console.log(`stdout: ${stdout}`);
-            console.error(`stderr: ${stderr}`);
-            response.status(200).send(successMessage);
+          console.log(`stdout: ${stdout}`);
         }
-    });
-}
+        
+        // Рекурсивно вызываем следующую команду
+        executeCommandsSequentially(commands, currentIndex + 1);
+      });
+    }
+  }
+  
+  // Начинаем выполнение команд с индекса 0
+  
+app.post('/api/deploy', (req, res) => {
+    executeCommandsSequentially(commands, 0);
+});
 
 app.get('/test2', (req, res) => {
     res.send('Hello World!');
