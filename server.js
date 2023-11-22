@@ -230,7 +230,7 @@ bot.on('callback_query', (query) => {
  
 
 
-// Запуск сервера
+// Запуск сервера node js with port 3000
 app.listen(port, () => {
     console.log(`Сервер запущен на порту ${port}`);
 });
