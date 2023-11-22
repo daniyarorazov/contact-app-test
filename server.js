@@ -135,7 +135,7 @@ app.get('/api/get-data', (req, res) => {
 });
 
 app.get('/api/get-data-company', (req, res) => {
-    db.any('SELECT * FROM students')
+    db.any('SELECT * FROM company')
         .then(data => {
             const templateData = {
                 events: data.map(item => {
