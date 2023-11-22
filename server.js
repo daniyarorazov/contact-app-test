@@ -111,6 +111,9 @@ app.get('/api/get-data', (req, res) => {
         });
 });
 
+app.get('/hello_world', (req, res) => {
+    res.send('Hello World!');
+});
 app.post('/send-message', (req, res) => {
       try {
         const chatId = req.body.chat_id;
