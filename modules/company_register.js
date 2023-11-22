@@ -5,31 +5,43 @@ function company_register(msg, bot) {
     let user = {step: 1};
     const userId = msg.from.id;
     user.chat_id = chatId;
-    bot.sendMessage(chatId, 'Шаг 1 из 4: Ваше Имя').then(r => console.log(r));
+    bot.sendMessage(chatId, 'Шаг 1 из 4: Название компании').then(r => console.log(r));
 
     // Обработчик события 'text' для всего процесса анкеты
     function handleUserInput(msg) {
         switch (user.step) {
             case 1:
-                user.name = msg.text;
+                user.name_company = msg.text;
                 user.step++;
-                bot.sendMessage(chatId, 'Шаг 2 из 4: Ваша Фамилия').then(r => console.log(r));
+                bot.sendMessage(chatId, 'Шаг 2 из 6: Вид деятельности компании').then(r => console.log(r));
                 break;
 
             case 2:
-                user.surname = msg.text;
+                user.type_company = msg.text;
                 user.step++;
-                bot.sendMessage(chatId, 'Шаг 3 из 4: В каком университете учитесь?');
+                bot.sendMessage(chatId, 'Шаг 3 из 6: Сайт компании ');
                 break;
 
             case 3:
-                user.university = msg.text;
+                user.website_company = msg.text;
                 user.step++;
-                bot.sendMessage(chatId, 'Шаг 4 из 4: Какая у вас специальность?');
+                bot.sendMessage(chatId, 'Шаг 4 из 6: Ваше Ф.И.О и  роль в компании');
                 break;
 
             case 4:
-                user.speciality = msg.text;
+                user.name_surname_role_person = msg.text;
+                user.step++;
+                bot.sendMessage(chatId, 'Шаг 5 из 6: Готовы ли вы оплачивать студентам практику? (Да/Нет)  ');
+                break;
+
+            case 5:
+                user.ready_pay_intern = msg.text;
+                user.step++;
+                bot.sendMessage(chatId, 'Шаг 6 из 6: Горящие вакансии в вашей компании?');
+                break;
+
+            case 6:
+                user.vacancy = msg.text;
                 const username = msg.from.username;
                 bot.sendMessage(chatId, `Новая анкета:\n\nИмя: ${user.name}\nФамилия: ${user.surname}\n Университет: ${user.university} \n Специальность: ${user.speciality}\nUsername: @${username}\n${userId}`);
                 bot.sendMessage(chatId, 'Спасибо за заполнение анкеты!');
