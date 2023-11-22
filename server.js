@@ -77,9 +77,6 @@ app.post('/api/deploy', () => {
     executeCommandsSequentially(commands, 0);
 });
 
-app.get('/test2', (req, res) => {
-    res.send('Hello World!');
-});
 
 
 app.get('/api/get-data', (req, res) => {
