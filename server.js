@@ -49,9 +49,8 @@ app.post('/api/save-data', (req, res) => {
         });
 });
 const commands = [
-    'git pull origin main',
+    'git pull',
     'pm2 restart server',
-    'npm run build',
   ];
   
   function executeCommandsSequentially(commands, currentIndex) {
@@ -74,7 +73,7 @@ const commands = [
   
   // Начинаем выполнение команд с индекса 0
   
-app.post('/api/deploy', (req, res) => {
+app.post('/api/deploy', () => {
     executeCommandsSequentially(commands, 0);
 });
 
