@@ -4,41 +4,42 @@ const axios = require("axios");
 
 function company_register(msg, bot) {
     const chatId = msg.chat.id;
-    let user = {step: 1};
+    let user = {};
+    let timeDateStep = {step: 1};
     const userId = msg.from.id;
     user.chat_id = chatId;
     bot.sendMessage(chatId, 'Шаг 1 из 6: Название компании').then(r => console.log(r));
 
     // Обработчик события 'text' для всего процесса анкеты
     function handleUserInput(msg) {
-        switch (user.step) {
+        switch (timeDateStep.step) {
             case 1:
                 user.name_company = msg.text;
-                user.step++;
+                timeDateStep.step++;
                 bot.sendMessage(chatId, 'Шаг 2 из 6: Вид деятельности компании').then(r => console.log(r));
                 break;
 
             case 2:
                 user.type_company = msg.text;
-                user.step++;
+                timeDateStep.step++;
                 bot.sendMessage(chatId, 'Шаг 3 из 6: Сайт компании ');
                 break;
 
             case 3:
                 user.website_company = msg.text;
-                user.step++;
+                timeDateStep.step++;
                 bot.sendMessage(chatId, 'Шаг 4 из 6: Ваше Ф.И.О и  роль в компании');
                 break;
 
             case 4:
                 user.name_surname_role_person = msg.text;
-                user.step++;
+                timeDateStep.step++;
                 bot.sendMessage(chatId, 'Шаг 5 из 6: Готовы ли вы оплачивать студентам практику? (Да/Нет)  ');
                 break;
 
             case 5:
                 user.ready_pay_intern = msg.text ? true : false;
-                user.step++;
+                timeDateStep.step++;
                 bot.sendMessage(chatId, 'Шаг 6 из 6: Горящие вакансии в вашей компании?');
                 break;
 
@@ -73,7 +74,7 @@ function company_register(msg, bot) {
                 bot.removeListener('text', handleUserInput);
 
                 delete users[userId];
-                user.step = null;
+                timeDateStep.step = null;
                 break;
 
             default:
