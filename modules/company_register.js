@@ -5,7 +5,7 @@ function company_register(msg, bot) {
     let user = {step: 1};
     const userId = msg.from.id;
     user.chat_id = chatId;
-    bot.sendMessage(chatId, 'Шаг 1 из 4: Название компании').then(r => console.log(r));
+    bot.sendMessage(chatId, 'Шаг 1 из 6: Название компании').then(r => console.log(r));
 
     // Обработчик события 'text' для всего процесса анкеты
     function handleUserInput(msg) {

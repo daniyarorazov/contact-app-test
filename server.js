@@ -53,13 +53,14 @@ app.post('/api/save-data-company', (req, res) => {
     const dataToSave = req.body; // Получаем данные из POST-запроса
 
     // Вставка данных в базу данных
-    db.none('INSERT INTO your_table_name (name_company, type_company, website_company, name_surname_role_person, ready_pay_intern, vacancy) VALUES ($1, $2, $3, $4, $5, $6)', [
+    db.none('INSERT INTO your_table_name (name_company, type_company, website_company, name_surname_role_person, ready_pay_intern, vacancy, chat_id) VALUES ($1, $2, $3, $4, $5, $6, $7)', [
         dataToSave.name_company,
         dataToSave.type_company,
         dataToSave.website_company,
         dataToSave.name_surname_role_person,
         dataToSave.ready_pay_intern,
-        dataToSave.vacancy
+        dataToSave.vacancy,
+        dataToSave.chat_id
     ])
         .then(() => {
             res.json({ message: 'Данные успешно сохранены', message2: dataToSave });
@@ -121,6 +122,32 @@ app.get('/api/get-data', (req, res) => {
                         "ready_practice_free": item.ready_practice_free || "Unknown",
                         "chat_id": item.chat_id || "Unknown",
                         "email": item.email || "Unknown"
+                    };
+                })
+            };
+
+            res.json(templateData);
+        })
+        .catch(error => {
+            console.error('Ошибка при получении данных:', error);
+            res.status(500).json({ error: 'Произошла ошибка при получении данных' });
+        });
+});
+
+app.get('/api/get-data-company', (req, res) => {
+    db.any('SELECT * FROM students')
+        .then(data => {
+            const templateData = {
+                events: data.map(item => {
+                    return {
+                        "id": item.id.toString(),
+                        "name_company": item.name_company || "Unknown",
+                        "type_company": item.type_company || "Unknown",
+                        "website_company": item.website_company || "Unknown",
+                        "name_surname_role_person": item.name_surname_role_person || "Unknown",
+                        "ready_pay_intern": item.ready_pay_intern || "Unknown",
+                        "vacancy": item.vacancy || "Unknown",
+                        "chat_id": item.chat_id || "Unknown"
                     };
                 })
             };
