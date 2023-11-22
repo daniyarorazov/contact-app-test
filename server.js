@@ -48,6 +48,28 @@ app.post('/api/save-data', (req, res) => {
             res.status(500).json({ error: 'Произошла ошибка при сохранении данных' });
         });
 });
+
+app.post('/api/save-data-company', (req, res) => {
+    const dataToSave = req.body; // Получаем данные из POST-запроса
+
+    // Вставка данных в базу данных
+    db.none('INSERT INTO your_table_name (name_company, type_company, website_company, name_surname_role_person, ready_pay_intern, vacancy) VALUES ($1, $2, $3, $4, $5, $6)', [
+        dataToSave.name_company,
+        dataToSave.type_company,
+        dataToSave.website_company,
+        dataToSave.name_surname_role_person,
+        dataToSave.ready_pay_intern,
+        dataToSave.vacancy
+    ])
+        .then(() => {
+            res.json({ message: 'Данные успешно сохранены', message2: dataToSave });
+        })
+        .catch(error => {
+            console.error('Ошибка при сохранении данных:', error);
+            res.status(500).json({ error: 'Произошла ошибка при сохранении данных' });
+        });
+});
+
 const commands = [
     'git pull',
     'pm2 restart server',

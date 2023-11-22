@@ -51,13 +51,13 @@ function company_register(msg, bot) {
                         'Content-Type': 'application/json'
                     }
                 };
-                // axios.post('http://qosyl.me:3000/api/save-data/', user, config)
-                //     .then(response => {
-                //         console.log(response.data);
-                //     })
-                //     .catch(error => {
-                //         console.log(error);
-                //     });
+                axios.post('http://qosyl.me:3000/api/save-data-company/', user, config)
+                    .then(response => {
+                        console.log(response.data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
 
                 // Удаление обработчика события 'text' после завершения анкеты
                 bot.removeListener('text', handleUserInput);
