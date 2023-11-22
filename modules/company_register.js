@@ -44,14 +44,14 @@ function company_register(msg, bot) {
                 user.vacancy = msg.text;
                 const username = msg.from.username;
                 bot.sendMessage(chatId, `Новая анкета:\n\n
-                    ID: ${dataToSave.id}\n
-                    Название компании: ${dataToSave.name_company}\n
-                    Тип компании: ${dataToSave.type_company}\n
-                    Веб-сайт компании: ${dataToSave.website_company}\n
-                    Имя-Фамилия-Роль сотрудника: ${dataToSave.name_surname_role_person}\n
-                    Готовность к оплате стажировки: ${dataToSave.ready_pay_intern}\n
-                    Вакансия: ${dataToSave.vacancy}\n
-                    Chat ID: ${dataToSave.chat_id}\n
+                    ID: ${user.id}\n
+                    Название компании: ${user.name_company}\n
+                    Тип компании: ${user.type_company}\n
+                    Веб-сайт компании: ${user.website_company}\n
+                    Имя-Фамилия-Роль сотрудника: ${user.name_surname_role_person}\n
+                    Готовность к оплате стажировки: ${user.ready_pay_intern}\n
+                    Вакансия: ${user.vacancy}\n
+                    Chat ID: ${user.chat_id}\n
                     Username: @${username}\n${userId}
                     `);
                 bot.sendMessage(chatId, 'Спасибо за заполнение анкеты!');
