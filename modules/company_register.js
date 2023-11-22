@@ -1,4 +1,6 @@
 const menu = require("./company_menu");
+const users = {};
+const axios = require("axios");
 
 function company_register(msg, bot) {
     const chatId = msg.chat.id;
@@ -35,7 +37,7 @@ function company_register(msg, bot) {
                 break;
 
             case 5:
-                user.ready_pay_intern = msg.text;
+                user.ready_pay_intern = msg.text ? true : false;
                 user.step++;
                 bot.sendMessage(chatId, 'Шаг 6 из 6: Горящие вакансии в вашей компании?');
                 break;
@@ -48,7 +50,7 @@ function company_register(msg, bot) {
                 Тип компании: ${user.type_company}\n
                 Веб-сайт компании: ${user.website_company}\n
                 Имя-Фамилия-Роль сотрудника: ${user.name_surname_role_person}\n
-                Готовность к оплате стажировки: ${user.ready_pay_intern}\n
+                Готовность к оплате стажировки: ${user.ready_pay_intern ? true : false}\n
                 Вакансия: ${user.vacancy}\n
                 Chat ID: ${user.chat_id}\n
                 Username: @${username}\n${userId}`);
