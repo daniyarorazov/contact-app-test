@@ -165,7 +165,7 @@ app.get('/user/:chat_id', (req, res) => {
     const chatId = parseInt(req.params.chat_id);
 
     // Замените на ваш запрос к базе данных
-    db.any('SELECT * FROM company WHERE chat_id = $1', chatId)
+    db.any('SELECT * FROM company WHERE chat_id = $1', chatId.toString())
         .then(user => {
             if (user) {
                 const userData = {
