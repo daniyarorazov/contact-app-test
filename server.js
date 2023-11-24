@@ -19,6 +19,7 @@ const axios = require('axios');
 const start = require('./modules/start');
 const student_register = require('./modules/student_register');
 const company_register = require('./modules/company_register');
+const view_own_company = require("./modules/view_own_company");
 
 app.use(bodyParser.json());
 
@@ -160,6 +161,35 @@ app.get('/api/get-data-company', (req, res) => {
         });
 });
 
+app.get('/user/:chat_id', (req, res) => {
+    const chatId = parseInt(req.params.chat_id);
+
+    // Замените на ваш запрос к базе данных
+    db.any('SELECT * FROM company WHERE chat_id = $1', chatId)
+        .then(user => {
+            if (user) {
+                const userData = {
+                    id: user.id.toString(),
+                    name_company: user.name_company || 'Unknown',
+                    type_company: user.type_company || 'Unknown',
+                    website_company: user.website_company || 'Unknown',
+                    name_surname_role_person: user.name_surname_role_person || 'Unknown',
+                    ready_pay_intern: user.ready_pay_intern || 'Unknown',
+                    vacancy: user.vacancy || 'Unknown',
+                    chat_id: user.chat_id || 'Unknown',
+                };
+
+                res.json(userData);
+            } else {
+                res.status(404).json({ message: 'Пользователь не найден' });
+            }
+        })
+        .catch(error => {
+            console.error('Error retrieving user:', error);
+            res.status(500).json({ message: 'Ошибка сервера' });
+        });
+});
+
 app.get('/hello_world', (req, res) => {
     res.send('Hello World!');
 });
@@ -219,6 +249,10 @@ bot.on('callback_query', (query) => {
 
   bot.onText(/🚀 Я работодатель/, (msg) => {
       company_register(msg, bot);
+  });
+
+  bot.onText(/📝 Посмотреть свою анкету компании/, (msg) => {
+      view_own_company(msg, bot);
   });
 
 
