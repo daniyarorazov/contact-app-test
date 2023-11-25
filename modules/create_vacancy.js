@@ -76,19 +76,18 @@ function create_vacancy(msg, bot) {
             case 9:
                 user.contact_phone = msg.text;
                 const username = msg.from.username;
-                bot.sendMessage(chatId, `Новая анкета:\n
-                    Вакансия: ${user.job_title}\n
-                    Описание вакансии: ${user.description}\n
-                    Навыки необходимы: ${user.skills_required}\n
-                    Вид занятости: ${user.employment_type}\n
-                    Локация вакансии: ${user.location}\n
-                    Будет ли зарплата: ${user.salary}\n
-                    Крайний срок подачи заявок: ${user.application_deadline}\n
-                    Контактная почта для связи: ${user.contact_email}\n
-                    Контактный телефон для связи: ${user.contact_phone}\n
-                    Chat ID: ${user.chat_id}\n
-                    Username: @${username}\n${userId}`);
-
+                bot.sendMessage(chatId, `<b>Ваша новая вакансия:</b>\n\n` +
+                `Вакансия: ${user.job_title.trim() || 'Не указано'}\n` +
+                `Описание вакансии: ${user.description.trim() || 'Не указано'}\n` +
+                `Навыки необходимы: ${user.skills_required.trim() || 'Не указано'}\n` +
+                `Вид занятости: ${user.employment_type.trim() || 'Не указано'}\n` +
+                `Локация вакансии: ${user.location.trim() || 'Не указано'}\n` +
+                `Будет ли зарплата: ${user.salary.trim() || 'Не указано'}\n` +
+                `Крайний срок подачи заявок: ${user.application_deadline.trim() || 'Не указано'}\n` +
+                `Контактная почта для связи: ${user.contact_email.trim() || 'Не указано'}\n` +
+                `Контактный телефон для связи: ${user.contact_phone.trim() || 'Не указано'}`
+                , { parse_mode: 'HTML' });
+            
                 bot.sendMessage(chatId, 'Спасибо за заполнение анкеты!');
                 menu(msg, bot);
                 const config = {
