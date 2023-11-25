@@ -324,7 +324,7 @@ app.post('/send-message', (req, res) => {
     try {
         const chatId = req.body.chat_id;
         const interestMessage = `Кто-то проявил интерес! Хотите начать чат?`;
-        const startChatLink = `tg://openmessage?user_id=${6444091658}`
+        const startChatLink = `tg://user?id=${6444091658}`
         const keyboard = {
             inline_keyboard: [
                 [
@@ -336,6 +336,7 @@ app.post('/send-message', (req, res) => {
                 ],
             ],
         };
+
 
         bot.sendMessage(chatId, interestMessage, {
             reply_markup: JSON.stringify(keyboard),
@@ -421,8 +422,8 @@ bot.onText(/Заполнить анкету/, (msg) => {
                 const config = {
                     headers: {
                         'Content-Type': 'application/json'
-                    }
-                };
+                    } 
+                }; 
                 axios.post('http://qosyl.me:3000/api/save-data/', user, config)
                     .then(response => {
                         console.log(response.data);

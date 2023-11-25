@@ -16,25 +16,24 @@ function view_vacancy(msg, bot) {
             console.log(chatId)
             // Process the data and construct a message
             const message = data.map(vacancy => {
-                return `
-                    Название компании: ${vacancy.company_name || "Unknown"}
-                    Вакансия: ${vacancy.job_title || "Unknown"}
-                    Описание вакансии: ${vacancy.description || "Unknown"}
-                    Навыки необходимы: ${vacancy.skills_required || "Unknown"}
-                    Вид занятости: ${vacancy.employment_type || "Unknown"}
-                    Локация вакансии: ${vacancy.location || "Unknown"}
-                    Зарплата: ${vacancy.salary || "Unknown"}
-                    Крайний срок подачи заявок: ${vacancy.application_deadline || "Unknown"}
-                    Контактная почта для связи: ${vacancy.contact_email || "Unknown"}
-                    Контактный телефон для связи: ${vacancy.contact_phone || "Unknown"}
-                    ---------------------
-                `;
+                return `🏢 <b>Название компании:</b> ${vacancy.company_name.trim() || 'Не указано'} \n\n ` +
+                `🚀 <b>Вакансия:</b> ${vacancy.job_title.trim() || 'Не указано'} \n ` +
+                `📄 <b>Описание вакансии:</b> ${vacancy.description.trim() || 'Не указано'} \n ` +
+                `⚡ <b>Навыки необходимы:</b> ${vacancy.skills_required.trim() || 'Не указано'} \n\n ` +
+                `🕒 <b>Вид занятости:</b> ${vacancy.employment_type.trim() || 'Не указано'} \n ` +
+                `📍 <b>Локация вакансии:</b> ${vacancy.location.trim() || 'Не указано'} \n\n ` +
+                `💵 <b>Зарплата:</b> ${vacancy.salary.trim() || 'Не указано'} \n ` +
+                `📅 <b>Крайний срок подачи заявок:</b> ${vacancy.application_deadline.trim() || 'Не указано'} \n\n ` +
+                `✉️ <b>Контактная почта:</b> ${vacancy.contact_email.trim() || 'Не указано'} \n ` +
+                `📞 <b>Контактный телефон:</b> ${vacancy.contact_phone.trim() || 'Не указано'} \n\n ` +
+                `---------------------`;
             }).join('\n');
 
-            // Send the constructed message
-            // setTimeout(() => {
-            //     bot.sendMessage(chatId, message);
-            // }, 2000);
+            if (message) {
+                bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
+            } else {
+                bot.sendMessage(chatId, "Вакансий к сожалению не было найдено!");
+            }
         })
         .catch(error => {
             console.error('Ошибка при получении данных:', error);
